@@ -1,2 +1,177 @@
 .idea/
 .vscode/
+maint.tf
+# Fichiers spécifiques à user-service
+user-service/HELP.md
+user-service/.gradle
+user-service/build/
+!user-service/gradle/wrapper/gradle-wrapper.jar
+!user-service/**/src/main/**/build/
+!user-service/**/src/test/**/build/
+
+### STS ###
+user-service/.apt_generated
+user-service/.classpath
+user-service/.factorypath
+user-service/.project
+user-service/.settings
+user-service/.springBeans
+user-service/.sts4-cache
+user-service/bin/
+!user-service/**/src/main/**/bin/
+!user-service/**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+user-service/.idea
+user-service/*.iws
+user-service/*.iml
+user-service/*.ipr
+user-service/out/
+!user-service/**/src/main/**/out/
+!user-service/**/src/test/**/out/
+
+### NetBeans ###
+user-service/nbproject/private/
+user-service/nbbuild/
+user-service/dist/
+user-service/nbdist/
+user-service/.nb-gradle/
+
+### VS Code ###
+user-service/.vscode/
+
+
+
+###### Booking ignore 
+# Fichiers spécifiques à booking-service
+booking-service/HELP.md
+booking-service/.gradle
+booking-service/build/
+!booking-service/gradle/wrapper/gradle-wrapper.jar
+!booking-service/**/src/main/**/build/
+!booking-service/**/src/test/**/build/
+
+### STS ###
+booking-service/.apt_generated
+booking-service/.classpath
+booking-service/.factorypath
+booking-service/.project
+booking-service/.settings
+booking-service/.springBeans
+booking-service/.sts4-cache
+booking-service/bin/
+!booking-service/**/src/main/**/bin/
+!booking-service/**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+booking-service/.idea
+booking-service/*.iws
+booking-service/*.iml
+booking-service/*.ipr
+booking-service/out/
+!booking-service/**/src/main/**/out/
+!booking-service/**/src/test/**/out/
+
+### NetBeans ###
+booking-service/nbproject/private/
+booking-service/nbbuild/
+booking-service/dist/
+booking-service/nbdist/
+booking-service/.nb-gradle/
+
+### VS Code ###
+booking-service/.vscode/
+
+
+
+
+###### Payment ignore  
+# Fichiers spécifiques à payment-service
+payment-service/HELP.md
+payment-service/.gradle
+payment-service/build/
+!payment-service/gradle/wrapper/gradle-wrapper.jar
+!payment-service/**/src/main/**/build/
+!payment-service/**/src/test/**/build/
+
+### STS ###
+payment-service/.apt_generated
+payment-service/.classpath
+payment-service/.factorypath
+payment-service/.project
+payment-service/.settings
+payment-service/.springBeans
+payment-service/.sts4-cache
+payment-service/bin/
+!payment-service/**/src/main/**/bin/
+!payment-service/**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+payment-service/.idea
+payment-service/*.iws
+payment-service/*.iml
+payment-service/*.ipr
+payment-service/out/
+!payment-service/**/src/main/**/out/
+!payment-service/**/src/test/**/out/
+
+### NetBeans ###
+payment-service/nbproject/private/
+payment-service/nbbuild/
+payment-service/dist/
+payment-service/nbdist/
+payment-service/.nb-gradle/
+
+### VS Code ###
+payment-service/.vscode/
+
+
+
+
+### Car ignore 
+
+# Fichiers spécifiques à car-service
+car-service/HELP.md
+car-service/.gradle
+car-service/build/
+!car-service/gradle/wrapper/gradle-wrapper.jar
+!car-service/**/src/main/**/build/
+!car-service/**/src/test/**/build/
+
+### STS ###
+car-service/.apt_generated
+car-service/.classpath
+car-service/.factorypath
+car-service/.project
+car-service/.settings
+car-service/.springBeans
+car-service/.sts4-cache
+car-service/bin/
+!car-service/**/src/main/**/bin/
+!car-service/**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+car-service/.idea
+car-service/*.iws
+car-service/*.iml
+car-service/*.ipr
+car-service/out/
+!car-service/**/src/main/**/out/
+!car-service/**/src/test/**/out/
+
+### NetBeans ###
+car-service/nbproject/private/
+car-service/nbbuild/
+car-service/dist/
+car-service/nbdist/
+car-service/.nb-gradle/
+
+### VS Code ###
+car-service/.vscode/
+
+
+
+#Terrofrom ignore 
+.terraform.lock.hcl
+terraform.tfstate
+ 
