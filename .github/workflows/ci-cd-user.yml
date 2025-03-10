@@ -77,6 +77,17 @@ jobs:
       - name: Plan Terraform
         run: terraform plan
 
+      - name: Install GKE Auth Plugin
+        run: gcloud components install gke-gcloud-auth-plugin
+      
+      - name: Update kubeconfig
+        run: |
+          export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+          gcloud container clusters get-credentials car-rental-cluster \
+            --region europe-west1 \
+            --project car-rental-project-453100
+      
+        
       # Step 10: Apply Terraform
       - name: Apply Terraform
         run: terraform apply -auto-approve
