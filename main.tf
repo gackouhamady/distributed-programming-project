@@ -69,7 +69,7 @@ resource "kubernetes_deployment" "user-service" {
           name  = "user-service"
           image = "hamadygackou/user-service:latest"
 
-          ports {
+          port {
             container_port = 8080
           }
         }
