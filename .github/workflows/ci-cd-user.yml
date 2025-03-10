@@ -22,8 +22,12 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       # Étape 3 : Build et push de l'image Docker
+      # Étape 3 : Build et push de l'image Docker
       - name: Build and push Docker image
         run: |
+          # Se placer dans le répertoire .github/workflows où se trouve le Dockerfile
+          cd .github/workflows
+          
           # Afficher le répertoire courant pour vérifier le contexte
           echo "Current directory: $(pwd)"
           
@@ -39,6 +43,7 @@ jobs:
           
           # Pusher l'image vers Docker Hub
           docker push $DOCKER_IMAGE
+
 
 
       # Étape 4 : Configurer Google Cloud SDK
