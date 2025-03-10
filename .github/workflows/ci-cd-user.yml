@@ -21,28 +21,20 @@ jobs:
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # Étape 3 : Build et push de l'image Docker
-      # Étape 3 : Build et push de l'image Docker
+     # Étape 3 : Build et push de l'image Docker
       - name: Build and push Docker image
         run: |
-          # Se placer dans le répertoire .github/workflows où se trouve le Dockerfile
-          cd .github/workflows
-          
-          # Afficher le répertoire courant pour vérifier le contexte
-          echo "Current directory: $(pwd)"
-          
           IMAGE_NAME=user-service
           IMAGE_TAG=latest
           DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
 
-          # Afficher l'image Docker que nous allons construire
-          echo "Building and pushing Docker image: $DOCKER_IMAGE"
+          # Build de l'image Docker en spécifiant le chemin du Dockerfile
+          docker build -t $DOCKER_IMAGE -f user-service/Dockerfile user-service/
 
-          # Build de l'image Docker
-          docker build -t $DOCKER_IMAGE .
-          
           # Pusher l'image vers Docker Hub
           docker push $DOCKER_IMAGE
+
+      
 
 
 
