@@ -54,6 +54,9 @@ jobs:
             --zone ${{ secrets.GKE_ZONE }} \
             --project ${{ secrets.GCP_PROJECT_ID }}
 
+
+    # Kubectl  fix  
+
       # Step 7: Install Terraform
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
