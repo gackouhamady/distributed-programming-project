@@ -55,7 +55,7 @@ jobs:
             --project ${{ secrets.GCP_PROJECT_ID }}
 
 
-    # Kubectl  fix  
+    # Kubectl  fix   end 
 
       # Step 7: Install Terraform
       - name: Install Terraform
