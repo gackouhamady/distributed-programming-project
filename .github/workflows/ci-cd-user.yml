@@ -17,29 +17,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Étape 2 : Vérification de la présence du Dockerfile
-      - name: Check if Dockerfile exists
-        run: |
-          if [ ! -f Dockerfile ]; then
-            echo "Erreur : Dockerfile introuvable dans le répertoire courant."
-            exit 1
-          fi
-
-      # Étape 3 : Se connecter à Docker Hub
+      # Étape 2 : Se connecter à Docker Hub
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # Étape 4 : Build et push de l'image Docker
+      # Étape 3 : Build et push de l'image Docker
       - name: Build and push Docker image
         run: |
+          # Afficher le répertoire courant pour vérifier le contexte
+          echo "Current directory: $(pwd)"
+          
           IMAGE_NAME=user-service
           IMAGE_TAG=latest
           DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
 
+          # Afficher l'image Docker que nous allons construire
+          echo "Building and pushing Docker image: $DOCKER_IMAGE"
+
+          # Build de l'image Docker
           docker build -t $DOCKER_IMAGE .
+          
+          # Pusher l'image vers Docker Hub
           docker push $DOCKER_IMAGE
 
-      # Étape 5 : Configurer Google Cloud SDK
+
+      # Étape 4 : Configurer Google Cloud SDK
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
         with:
@@ -47,27 +49,27 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
 
-      # Étape 6 : Configurer kubectl
+      # Étape 5 : Configurer kubectl
       - name: Set up kubectl
         run: |
           gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} \
             --zone ${{ secrets.GKE_ZONE }} \
             --project ${{ secrets.GCP_PROJECT_ID }}
 
-      # Étape 7 : Installer Terraform
+      # Étape 6 : Installer Terraform
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: "1.1.0"  # Version de Terraform à utiliser
 
-      # Étape 8 : Initialiser Terraform
+      # Étape 7 : Initialiser Terraform
       - name: Initialize Terraform
         run: terraform init
 
-      # Étape 9 : Vérifier la configuration Terraform
+      # Étape 8 : Vérifier la configuration Terraform
       - name: Plan Terraform
         run: terraform plan
 
-      # Étape 10 : Appliquer la configuration Terraform
+      # Étape 9 : Appliquer la configuration Terraform
       - name: Apply Terraform
         run: terraform apply -auto-approve
