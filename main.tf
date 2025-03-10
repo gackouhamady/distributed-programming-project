@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "user-service" {
       }
 
       spec {
-        containers {
+        container {
           name  = "user-service"
           image = "hamadygackou/user-service:latest"
 
