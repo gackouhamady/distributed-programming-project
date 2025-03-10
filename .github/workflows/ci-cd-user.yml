@@ -40,11 +40,12 @@ jobs:
 
       # Étape 4 : Configurer Google Cloud SDK
       - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+        uses: oogle-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          service_account_key: ${{ secrets.GCP_GCP_CREDENTIALS}}
           export_default_credentials: true
+    
 
       # Étape 5 : Configurer kubectl
       - name: Set up kubectl
