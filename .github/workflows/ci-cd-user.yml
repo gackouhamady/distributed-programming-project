@@ -87,6 +87,8 @@ jobs:
             --region europe-west1 \
             --project car-rental-project-453100
       
+    # Fix issues  
+    
         
       # Step 10: Apply Terraform
       - name: Apply Terraform
