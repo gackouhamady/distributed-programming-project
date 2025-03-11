@@ -11,7 +11,7 @@ terraform {
   # Configuration du backend GCS
   backend "gcs" {
     bucket = "car-rental-bucket-2"    # Nom du bucket
-    prefix = "terraform/state"    # Dossier pour stocker l'état
+    prefix = "terraform/state"        # Dossier pour stocker l'état
   }
 }
 
@@ -46,6 +46,11 @@ resource "google_compute_instance" "terraform" {
   }
 
   allow_stopping_for_update = true
+
+  lifecycle {
+    prevent_destroy = false           # Autoriser la suppression de la ressource
+    create_before_destroy = true      # Créer la nouvelle instance avant de détruire l'ancienne
+  }
 }
 
 # Déploiement Kubernetes pour le user-service
@@ -82,6 +87,11 @@ resource "kubernetes_deployment" "user-service" {
       }
     }
   }
+
+  lifecycle {
+    prevent_destroy = false           # Autoriser la suppression de la ressource
+    create_before_destroy = true      # Créer le nouveau déploiement avant de détruire l'ancien
+  }
 }
 
 # Service Kubernetes pour exposer le user-service
@@ -105,4 +115,9 @@ resource "kubernetes_service" "user-service" {
 
   # Dépendance explicite sur le déploiement
   depends_on = [kubernetes_deployment.user-service]
+
+  lifecycle {
+    prevent_destroy = false           # Autoriser la suppression de la ressource
+    create_before_destroy = true      # Créer le nouveau service avant de détruire l'ancien
+  }
 }
