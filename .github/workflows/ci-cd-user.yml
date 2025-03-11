@@ -47,7 +47,6 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_default_credentials: true
 
-
       # Step 6: Set up kubectl
       - name: Set up kubectl
         run: |
@@ -55,21 +54,13 @@ jobs:
             --region ${{ secrets.GKE_REGION }} \
             --project ${{ secrets.GCP_PROJECT_ID }}
 
-
-
-    # Kubectl  fix  : endd 
-      # Check working directory
-      - name: Check working directory
-        run: pwd && ls -la
-
-
       # Step 7: Install Terraform
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: "1.1.0"
 
-      # Step 8: Initialize Terraform
+      # Step 8: Initialize Terraform avec le backend GCS
       - name: Initialize Terraform
         run: terraform init
 
@@ -77,19 +68,6 @@ jobs:
       - name: Plan Terraform
         run: terraform plan
 
-      - name: Install GKE Auth Plugin
-        run: gcloud components install gke-gcloud-auth-plugin
-      
-      - name: Update kubeconfig
-        run: |
-          export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-          gcloud container clusters get-credentials car-rental-cluster \
-            --region europe-west1 \
-            --project car-rental-project-453100
-      
-    # Fix issues  terrafrom end 
-
-        
       # Step 10: Apply Terraform
       - name: Apply Terraform
         run: terraform apply -auto-approve

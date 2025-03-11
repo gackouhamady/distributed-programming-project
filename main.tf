@@ -7,6 +7,12 @@ terraform {
       source = "hashicorp/kubernetes"
     }
   }
+
+  # Configuration du backend Google Cloud Storage (GCS)
+  backend "gcs" {
+    bucket = "car-rental-bucket"  # Nom de votre bucket
+    prefix = "terraform/state"    # Dossier dans le bucket pour stocker l'état
+  }
 }
 
 provider "google" {
@@ -100,4 +106,3 @@ resource "kubernetes_service" "user-service" {
   # Dépendance explicite sur le déploiement
   depends_on = [kubernetes_deployment.user-service]
 }
-
