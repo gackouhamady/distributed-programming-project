@@ -1,31 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source = "hashicorp/google"
-    }
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-    }
-  }
-
-  # Configuration du backend GCS
-  backend "gcs" {
-    bucket = "car-rental-bucket-2"    # Nom du bucket
-    prefix = "terraform/state"        # Dossier pour stocker l'état
-  }
-}
-
-provider "google" {
-  project = "car-rental-project-453100"
-  region  = "europe-west1"
-  zone    = "europe-west1-c"
-}
-
-# Configuration du fournisseur Kubernetes
-provider "kubernetes" {
-  config_path = "~/.kube/config"  # Chemin vers votre fichier kubeconfig
-}
-
 # Création d'une instance Google Compute Engine
 resource "google_compute_instance" "terraform" {
   name         = "terraform"
@@ -48,8 +20,12 @@ resource "google_compute_instance" "terraform" {
   allow_stopping_for_update = true
 
   lifecycle {
-    prevent_destroy = false           # Autoriser la suppression de la ressource
     create_before_destroy = true      # Créer la nouvelle instance avant de détruire l'ancienne
+    ignore_changes = [
+      # Si vous voulez ignorer des changements spécifiques
+      name,
+      machine_type
+    ]
   }
 }
 
@@ -89,8 +65,11 @@ resource "kubernetes_deployment" "user-service" {
   }
 
   lifecycle {
-    prevent_destroy = false           # Autoriser la suppression de la ressource
     create_before_destroy = true      # Créer le nouveau déploiement avant de détruire l'ancien
+    ignore_changes = [
+      # Vous pouvez ignorer des changements spécifiques
+      replicas
+    ]
   }
 }
 
@@ -117,7 +96,10 @@ resource "kubernetes_service" "user-service" {
   depends_on = [kubernetes_deployment.user-service]
 
   lifecycle {
-    prevent_destroy = false           # Autoriser la suppression de la ressource
     create_before_destroy = true      # Créer le nouveau service avant de détruire l'ancien
+    ignore_changes = [
+      # Vous pouvez ignorer des changements spécifiques
+      selector
+    ]
   }
 }
