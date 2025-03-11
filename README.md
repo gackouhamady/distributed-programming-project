@@ -5,40 +5,7 @@ Le projet **Car-Rental** est une application de location de voitures en ligne qu
 
 ## Architecture du Projet
 L'application est divisée en plusieurs microservices, chacun ayant une responsabilité spécifique. Voici un aperçu de l'architecture :
-+-------------------+       +-------------------+       +-------------------+
-|    Client         | ----> | API Gateway       | ----> | User Service      |
-| (Navigateur/App)  |       | (Spring Cloud)    |       | (Spring Boot)     |
-+-------------------+       +-------------------+       +-------------------+
-                                |                           |
-                                v                           v
-                    +-------------------+       +-------------------+
-                    | Car Service       |       | Booking Service   |
-                    | (Spring Boot)    |       | (Spring Boot)     |
-                    +-------------------+       +-------------------+
-                                |                           |
-                                v                           v
-                    +-------------------+       +-------------------+
-                    | Payment Service   |       | Base de Données   |
-                    | (Spring Boot)    |       | (Cloud SQL)       |
-                    +-------------------+       +-------------------+
-                                |
-                                v
-                    +-------------------+
-                    | Service Mesh      |
-                    | (Istio)           |
-                    +-------------------+
-                                |
-                                v
-                    +-------------------+
-                    | Terraform        |
-                    | (Infra as Code)  |
-                    +-------------------+
-                                |
-                                v
-                    +-------------------+
-                    | Google Cloud      |
-                    | Platform (GCP)    |
-                    +-------------------+
+
 ### Diagramme d'Architecture
 ![Architecture Car-Rental](architecture_car_rental.png)
 
