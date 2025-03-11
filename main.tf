@@ -8,10 +8,10 @@ terraform {
     }
   }
 
-  # Configuration du backend Google Cloud Storage (GCS)
+  # Configuration du backend GCS
   backend "gcs" {
-    bucket = "car-rental-bucket"  # Nom de votre bucket
-    prefix = "terraform/state"    # Dossier dans le bucket pour stocker l'état
+    bucket = "car-rental-bucket-2"    # Nom du bucket
+    prefix = "terraform/state"    # Dossier pour stocker l'état
   }
 }
 
