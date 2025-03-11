@@ -60,16 +60,8 @@ resource "google_compute_instance" "terraform" {
   }
 }
 
-# Variable pour vérifier l'existence du déploiement Kubernetes
-variable "deployment_exists" {
-  type    = bool
-  default = false
-}
-
-# Création du déploiement Kubernetes uniquement s'il n'existe pas déjà
+# Déploiement Kubernetes pour le user-service
 resource "kubernetes_deployment" "user-service" {
-  count = var.deployment_exists ? 0 : 1
-
   metadata {
     name = "user-service"
   }
@@ -108,16 +100,8 @@ resource "kubernetes_deployment" "user-service" {
   }
 }
 
-# Variable pour vérifier l'existence du service Kubernetes
-variable "service_exists" {
-  type    = bool
-  default = false
-}
-
-# Création du service Kubernetes uniquement s'il n'existe pas déjà
+# Service Kubernetes pour exposer le user-service
 resource "kubernetes_service" "user-service" {
-  count = var.service_exists ? 0 : 1
-
   metadata {
     name = "user-service"
   }
