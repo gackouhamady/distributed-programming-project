@@ -64,11 +64,6 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
 
-      # Step 9: Plan Terraform
-      - name: Plan Terraform
-        run: terraform plan -lock=false
-#Fix
-      
       - name: Install GKE Auth Plugin
         run: gcloud components install gke-gcloud-auth-plugin
 
@@ -78,7 +73,11 @@ jobs:
           gcloud container clusters get-credentials car-rental-cluster \
             --region europe-west1 \
             --project car-rental-project-453100
-               
+      # Step 9: Plan Terraform
+      - name: Plan Terraform
+        run: terraform plan -lock=false
+#Fix issues
+      
 
 
       # Step 10: Apply Terraform
