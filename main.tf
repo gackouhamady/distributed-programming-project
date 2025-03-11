@@ -26,8 +26,16 @@ provider "kubernetes" {
   config_path = "~/.kube/config"  # Chemin vers votre fichier kubeconfig
 }
 
-# Création d'une instance Google Compute Engine
+# Vérification de l'existence de l'instance GCE
+data "google_compute_instance" "existing_instance" {
+  name   = "terraform"
+  zone   = "europe-west1-c"
+}
+
+# Création de l'instance GCE uniquement si elle n'existe pas déjà
 resource "google_compute_instance" "terraform" {
+  count = data.google_compute_instance.existing_instance == null ? 1 : 0
+
   name         = "terraform"
   machine_type = "e2-medium"
   tags         = ["web", "dev"]
@@ -52,8 +60,18 @@ resource "google_compute_instance" "terraform" {
   }
 }
 
-# Déploiement Kubernetes pour le user-service
+# Vérification de l'existence du déploiement Kubernetes
+data "kubernetes_deployment" "existing_deployment" {
+  metadata {
+    name = "user-service"
+    namespace = "default"
+  }
+}
+
+# Création du déploiement Kubernetes uniquement s'il n'existe pas déjà
 resource "kubernetes_deployment" "user-service" {
+  count = data.kubernetes_deployment.existing_deployment == null ? 1 : 0
+
   metadata {
     name = "user-service"
   }
@@ -92,8 +110,18 @@ resource "kubernetes_deployment" "user-service" {
   }
 }
 
-# Service Kubernetes pour exposer le user-service
+# Vérification de l'existence du service Kubernetes
+data "kubernetes_service" "existing_service" {
+  metadata {
+    name = "user-service"
+    namespace = "default"
+  }
+}
+
+# Création du service Kubernetes uniquement s'il n'existe pas déjà
 resource "kubernetes_service" "user-service" {
+  count = data.kubernetes_service.existing_service == null ? 1 : 0
+
   metadata {
     name = "user-service"
   }
