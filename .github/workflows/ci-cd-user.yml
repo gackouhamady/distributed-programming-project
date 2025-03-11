@@ -76,7 +76,8 @@ jobs:
       # Step 9: Plan Terraform
       - name: Plan Terraform
         run: terraform plan -lock=false
-#Fix issues
+
+#Fix issues :  end 
       
 
 
