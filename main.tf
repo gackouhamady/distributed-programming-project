@@ -100,3 +100,4 @@ resource "kubernetes_service" "user-service" {
   # Dépendance explicite sur le déploiement
   depends_on = [kubernetes_deployment.user-service]
 }
+
