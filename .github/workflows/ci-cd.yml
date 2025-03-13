@@ -207,7 +207,7 @@ jobs:
       # Step 9: Plan Terraform
       - name: Plan Terraform
         run: terraform plan -lock=false
-
+#  End all 
       # Step 10: Apply Terraform
       - name: Apply Terraform
         run: terraform apply -auto-approve -lock=false
