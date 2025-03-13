@@ -36,7 +36,7 @@ dependencies {
 }
 
 bootJar {
-	mainClass = 'com.example.bookingservice.BookingServiceApplication'
+	mainClass = 'com.example.paymentservice.PaymentServiceApplication'
 }
 
 

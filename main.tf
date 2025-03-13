@@ -126,3 +126,204 @@ resource "kubernetes_service" "user-service" {
     create_before_destroy = true  # Créer le nouveau service avant de détruire l'ancien
   }
 }
+
+# Déploiement Kubernetes pour le booking-service
+resource "kubernetes_deployment" "booking-service" {
+  metadata {
+    name = "booking-service"
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "booking-service"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "booking-service"
+        }
+      }
+
+      spec {
+        container {
+          name  = "booking-service"
+          image = "hamadygackou/booking-service:latest"
+
+          port {
+            container_port = 8080
+          }
+        }
+      }
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true  # Créer le nouveau déploiement avant de détruire l'ancien
+  }
+}
+
+# Service Kubernetes pour exposer le booking-service
+resource "kubernetes_service" "booking-service" {
+  metadata {
+    name = "booking-service"
+  }
+
+  spec {
+    selector = {
+      app = "booking-service"
+    }
+
+    port {
+      port        = 80
+      target_port = 8080
+    }
+
+    type = "LoadBalancer"
+  }
+
+  # Dépendance explicite sur le déploiement
+  depends_on = [kubernetes_deployment.booking-service]
+
+  lifecycle {
+    create_before_destroy = true  # Créer le nouveau service avant de détruire l'ancien
+  }
+}
+
+# Déploiement Kubernetes pour le payment-service
+resource "kubernetes_deployment" "payment-service" {
+  metadata {
+    name = "payment-service"
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "payment-service"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "payment-service"
+        }
+      }
+
+      spec {
+        container {
+          name  = "payment-service"
+          image = "hamadygackou/payment-service:latest"
+
+          port {
+            container_port = 8080
+          }
+        }
+      }
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true  # Créer le nouveau déploiement avant de détruire l'ancien
+  }
+}
+
+# Service Kubernetes pour exposer le payment-service
+resource "kubernetes_service" "payment-service" {
+  metadata {
+    name = "payment-service"
+  }
+
+  spec {
+    selector = {
+      app = "payment-service"
+    }
+
+    port {
+      port        = 80
+      target_port = 8080
+    }
+
+    type = "LoadBalancer"
+  }
+
+  # Dépendance explicite sur le déploiement
+  depends_on = [kubernetes_deployment.payment-service]
+
+  lifecycle {
+    create_before_destroy = true  # Créer le nouveau service avant de détruire l'ancien
+  }
+}
+
+# Déploiement Kubernetes pour le car-service
+resource "kubernetes_deployment" "car-service" {
+  metadata {
+    name = "car-service"
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "car-service"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "car-service"
+        }
+      }
+
+      spec {
+        container {
+          name  = "car-service"
+          image = "hamadygackou/car-service:latest"
+
+          port {
+            container_port = 8080
+          }
+        }
+      }
+    }
+  }
+
+  lifecycle {
+    create_before_destroy = true  # Créer le nouveau déploiement avant de détruire l'ancien
+  }
+}
+
+# Service Kubernetes pour exposer le car-service
+resource "kubernetes_service" "car-service" {
+  metadata {
+    name = "car-service"
+  }
+
+  spec {
+    selector = {
+      app = "car-service"
+    }
+
+    port {
+      port        = 80
+      target_port = 8080
+    }
+
+    type = "LoadBalancer"
+  }
+
+  # Dépendance explicite sur le déploiement
+  depends_on = [kubernetes_deployment.car-service]
+
+  lifecycle {
+    create_before_destroy = true  # Créer le nouveau service avant de détruire l'ancien
+  }
+}
