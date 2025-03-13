@@ -31,7 +31,9 @@ jobs:
           distribution: 'temurin' # Specify the Java distribution
 
       - name: Make gradlew executable for user-service
-        run: chmod +x ./user-service/gradlew
+        run: |
+             ls -la 
+             chmod +x ./user-service/gradlew
 
       - name: Cache Gradle dependencies for user-service
         uses: actions/cache@v3
@@ -42,10 +44,14 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build user-service
-        run: ./user-service/gradlew build
+        run: |
+             ls -la
+             ./user-service/gradlew build
 
       - name: Run tests for user-service
-        run: ./user-service/gradlew test
+        run: |
+            ls -la 
+             ./user-service/gradlew test
 
       - name: Build and push Docker image for user-service
         run: |
