@@ -1,4 +1,4 @@
-name: Build, Push, and Deploy with Terraform
+name: Build, Test, Push, and Deploy with Terraform
 
 on:
   push:
@@ -44,14 +44,16 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build user-service
+        working-directory: ./user-service
         run: |
              ls -la
-             ./user-service/gradlew build
+             ./gradlew build
 
       - name: Run tests for user-service
+        working-directory: ./user-service
         run: |
             ls -la 
-             ./user-service/gradlew test
+             ./gradlew test
 
       - name: Build and push Docker image for user-service
         run: |
@@ -80,10 +82,12 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build booking-service
-        run: ./booking-service/gradlew build
+        working-directory: ./booking-service
+        run: ./gradlew build
 
       - name: Run tests for booking-service
-        run: ./booking-service/gradlew test
+        working-directory: ./booking-service
+        run: ./gradlew test
 
       - name: Build and push Docker image for booking-service
         run: |
@@ -112,10 +116,12 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build payment-service
-        run: ./payment-service/gradlew build
+        working-directory: ./payment-service
+        run: ./gradlew build
 
       - name: Run tests for payment-service
-        run: ./payment-service/gradlew test
+        working-directory: ./payment-service
+        run: ./gradlew test
 
       - name: Build and push Docker image for payment-service
         run: |
@@ -144,10 +150,12 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build car-service
-        run: ./car-service/gradlew build
+        working-directory: ./car-service
+        run: ./gradlew build
 
       - name: Run tests for car-service
-        run: ./car-service/gradlew test
+        working-directory: ./car-service
+        run: ./gradlew test
 
       - name: Build and push Docker image for car-service
         run: |
