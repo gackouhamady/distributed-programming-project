@@ -90,17 +90,6 @@ resource "kubernetes_deployment" "user-service" {
           port {
             container_port = 8080
           }
-
-          resources {
-            requests = {
-              cpu    = "200m"
-              memory = "256Mi"
-            }
-            limits = {
-              cpu    = "500m"
-              memory = "512Mi"
-            }
-          }
         }
       }
     }
@@ -130,41 +119,12 @@ resource "kubernetes_service" "user-service" {
     type = "LoadBalancer"
   }
 
+  # Dépendance explicite sur le déploiement
   depends_on = [kubernetes_deployment.user-service]
 
   lifecycle {
     create_before_destroy = true  # Créer le nouveau service avant de détruire l'ancien
   }
-}
-
-# Horizontal Pod Autoscaler pour le user-service
-resource "kubernetes_horizontal_pod_autoscaler" "user-service" {
-  metadata {
-    name = "user-service-hpa"
-  }
-
-  spec {
-    scale_target_ref {
-      kind = "Deployment"
-      name = kubernetes_deployment.user-service.metadata[0].name
-    }
-
-    min_replicas = 1
-    max_replicas = 10
-
-    metric {
-      type = "Resource"
-      resource {
-        name = "cpu"
-        target {
-          type               = "Utilization"
-          average_utilization = 80
-        }
-      }
-    }
-  }
-
-  depends_on = [kubernetes_deployment.user-service]
 }
 
 # Déploiement Kubernetes pour le booking-service
@@ -197,17 +157,6 @@ resource "kubernetes_deployment" "booking-service" {
           port {
             container_port = 8080
           }
-
-          resources {
-            requests = {
-              cpu    = "200m"
-              memory = "256Mi"
-            }
-            limits = {
-              cpu    = "500m"
-              memory = "512Mi"
-            }
-          }
         }
       }
     }
@@ -237,41 +186,12 @@ resource "kubernetes_service" "booking-service" {
     type = "LoadBalancer"
   }
 
+  # Dépendance explicite sur le déploiement
   depends_on = [kubernetes_deployment.booking-service]
 
   lifecycle {
     create_before_destroy = true  # Créer le nouveau service avant de détruire l'ancien
   }
-}
-
-# Horizontal Pod Autoscaler pour le booking-service
-resource "kubernetes_horizontal_pod_autoscaler" "booking-service" {
-  metadata {
-    name = "booking-service-hpa"
-  }
-
-  spec {
-    scale_target_ref {
-      kind = "Deployment"
-      name = kubernetes_deployment.booking-service.metadata[0].name
-    }
-
-    min_replicas = 1
-    max_replicas = 10
-
-    metric {
-      type = "Resource"
-      resource {
-        name = "cpu"
-        target {
-          type               = "Utilization"
-          average_utilization = 80
-        }
-      }
-    }
-  }
-
-  depends_on = [kubernetes_deployment.booking-service]
 }
 
 # Déploiement Kubernetes pour le payment-service
@@ -304,17 +224,6 @@ resource "kubernetes_deployment" "payment-service" {
           port {
             container_port = 8080
           }
-
-          resources {
-            requests = {
-              cpu    = "200m"
-              memory = "256Mi"
-            }
-            limits = {
-              cpu    = "500m"
-              memory = "512Mi"
-            }
-          }
         }
       }
     }
@@ -344,41 +253,12 @@ resource "kubernetes_service" "payment-service" {
     type = "LoadBalancer"
   }
 
+  # Dépendance explicite sur le déploiement
   depends_on = [kubernetes_deployment.payment-service]
 
   lifecycle {
     create_before_destroy = true  # Créer le nouveau service avant de détruire l'ancien
   }
-}
-
-# Horizontal Pod Autoscaler pour le payment-service
-resource "kubernetes_horizontal_pod_autoscaler" "payment-service" {
-  metadata {
-    name = "payment-service-hpa"
-  }
-
-  spec {
-    scale_target_ref {
-      kind = "Deployment"
-      name = kubernetes_deployment.payment-service.metadata[0].name
-    }
-
-    min_replicas = 1
-    max_replicas = 10
-
-    metric {
-      type = "Resource"
-      resource {
-        name = "cpu"
-        target {
-          type               = "Utilization"
-          average_utilization = 80
-        }
-      }
-    }
-  }
-
-  depends_on = [kubernetes_deployment.payment-service]
 }
 
 # Déploiement Kubernetes pour le car-service
@@ -411,17 +291,6 @@ resource "kubernetes_deployment" "car-service" {
           port {
             container_port = 8080
           }
-
-          resources {
-            requests = {
-              cpu    = "200m"
-              memory = "256Mi"
-            }
-            limits = {
-              cpu    = "500m"
-              memory = "512Mi"
-            }
-          }
         }
       }
     }
@@ -451,39 +320,10 @@ resource "kubernetes_service" "car-service" {
     type = "LoadBalancer"
   }
 
+  # Dépendance explicite sur le déploiement
   depends_on = [kubernetes_deployment.car-service]
 
   lifecycle {
     create_before_destroy = true  # Créer le nouveau service avant de détruire l'ancien
   }
-}
-
-# Horizontal Pod Autoscaler pour le car-service
-resource "kubernetes_horizontal_pod_autoscaler" "car-service" {
-  metadata {
-    name = "car-service-hpa"
-  }
-
-  spec {
-    scale_target_ref {
-      kind = "Deployment"
-      name = kubernetes_deployment.car-service.metadata[0].name
-    }
-
-    min_replicas = 1
-    max_replicas = 10
-
-    metric {
-      type = "Resource"
-      resource {
-        name = "cpu"
-        target {
-          type               = "Utilization"
-          average_utilization = 80
-        }
-      }
-    }
-  }
-
-  depends_on = [kubernetes_deployment.car-service]
 }
