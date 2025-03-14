@@ -911,7 +911,7 @@ resource "kubernetes_service" "car-service" {
 
 ## Importation des Services Kubernetes dans Terraform et Configuration du Service Mesh avec Istio
 
-Cette explique comment importer des services Kubernetes existants dans l'état de Terraform et configurer un service mesh avec Istio pour gérer le trafic entre les microservices.
+Cette etape explique comment importer des services Kubernetes existants dans l'état de Terraform et configurer un service mesh avec Istio pour gérer le trafic entre les microservices.
 
 ---
 
