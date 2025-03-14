@@ -1,8 +1,9 @@
 package com.example.bookingservice.dto;
 
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
 public class BookingDTO {
@@ -19,4 +20,6 @@ public class BookingDTO {
 
     @NotNull(message = "End time is mandatory")
     private LocalDateTime endTime;
+
+    // Getters et setters (générés automatiquement par Lombok @Data)
 }

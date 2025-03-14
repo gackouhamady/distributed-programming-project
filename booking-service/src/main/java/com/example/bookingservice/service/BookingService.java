@@ -1,14 +1,15 @@
 package com.example.bookingservice.service;
 
-import com.example.bookingservice.dto.BookingDTO;
-import com.example.bookingservice.exception.ResourceNotFoundException;
-import com.example.bookingservice.model.Booking;
-import com.example.bookingservice.repository.BookingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.bookingservice.dto.BookingDTO;
+import com.example.bookingservice.model.Booking;
+import com.example.bookingservice.repository.BookingRepository;
 
 @Service
 public class BookingService {
