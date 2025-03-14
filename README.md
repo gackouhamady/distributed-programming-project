@@ -80,31 +80,92 @@ L'application est divisée en plusieurs microservices, chacun ayant une responsa
 - **mTLS (Mutual TLS)** : Pour chiffrer la communication entre les services.
 - **Docker Content Trust** : Pour signer et vérifier les images Docker.
 
-## Étapes Initiales du Projet
-1. **Configuration de l'Environnement** :
-   - Installation des outils : Docker, Kubernetes (Minikube pour le développement local), Terraform, et les SDK GCP.
-   - Création d'un projet sur GCP et activation des API nécessaires (GKE, Cloud SQL, etc.).
-2. **Développement du Premier Microservice** :
-   - Développement d'un microservice Spring Boot pour gérer l'authentification et les utilisateurs.
-   - Dockerisation et publication de l'image Docker sur Google Container Registry (GCR).
-3. **Déploiement Local avec Kubernetes** :
-   - Création d'un cluster local avec Minikube.
-   - Déploiement du User Service dans le cluster.
-4. **Automatisation avec Terraform** :
-   - Configuration de Terraform pour déployer l'infrastructure sur GCP (GKE, Cloud SQL).
-   - Déploiement initial avec Terraform.
+# Pipeline CI/CD avec Terraform et Kubernetes
 
-## Prochaines Étapes
-1. **Développement des Autres Microservices** :
-   - Car Service, Booking Service, et Payment Service.
-2. **Intégration de l'API Gateway** :
-   - Configuration de Spring Cloud Gateway pour router les requêtes.
-3. **Ajout d'un Service Mesh** :
-   - Configuration d'Istio pour la communication sécurisée entre les services.
-4. **Déploiement dans le Cloud** :
-   - Déploiement de l'application sur GCP avec Terraform.
-5. **Tests et Validation** :
-   - Tests fonctionnels, tests de performance, et validation de la sécurité.
+Ce document décrit les étapes du pipeline CI/CD pour déployer une application de location de voitures sur Google Cloud Platform (GCP) en utilisant Terraform et Kubernetes. Le pipeline inclut des aspects de sécurité et d'optimisation.
+
+## 1. **Configuration de Terraform**
+
+### 1.1. **Fournisseurs**
+- **Google Cloud** : Utilisé pour gérer les ressources GCP.
+- **Kubernetes** : Pour déployer et gérer les ressources Kubernetes.
+- **Helm** : Pour gérer les charts Helm dans le cluster Kubernetes.
+
+### 1.2. **Backend GCS**
+- **Bucket** : `car-rental-bucket-2` pour stocker l'état de Terraform.
+- **Prefix** : `terraform/state` pour organiser les fichiers d'état.
+
+### 1.3. **Configuration des Providers**
+- **Google** : Projet `car-rental-project-453100`, région `europe-west1`, zone `europe-west1-c`.
+- **Kubernetes** : Utilise le fichier de configuration `~/.kube/config`.
+- **Helm** : Utilise également `~/.kube/config`.
+
+## 2. **Déploiement des Ressources**
+
+### 2.1. **Instance GCE**
+- **Nom** : `terraform`
+- **Type de machine** : `e2-medium`
+- **Image** : `debian-cloud/debian-11`
+- **Réseau** : `default` avec une IP publique.
+- **Cycle de vie** : Création avant destruction pour éviter les temps d'arrêt.
+
+### 2.2. **ClusterRole et ClusterRoleBinding**
+- **ClusterRole** : `cluster-admin` avec accès à toutes les ressources.
+- **ClusterRoleBinding** : Associe `cluster-admin` à l'utilisateur `admin`.
+
+### 2.3. **PeerAuthentication et Gateway TLS**
+- **PeerAuthentication** : Active le mTLS en mode `STRICT` dans `istio-system`.
+- **Gateway TLS** : Configure une passerelle TLS pour `example.com` avec un certificat `my-certificate`.
+
+## 3. **Déploiement des Services**
+
+### 3.1. **MySQL**
+- **Déploiement** : Utilise l'image `hamadygackou/mysql-custom:latest`.
+- **Service** : Exposé en mode `LoadBalancer` sur le port `3306`.
+- **Stockage** : Utilise un `PersistentVolumeClaim` pour `/var/lib/mysql`.
+
+### 3.2. **phpMyAdmin**
+- **Déploiement** : Utilise l'image `phpmyadmin/phpmyadmin`.
+- **Service** : Exposé en mode `LoadBalancer` sur le port `80`.
+
+### 3.3. **User-Service**
+- **Déploiement** : Utilise l'image `hamadygackou/user-service:latest`.
+- **Service** : Exposé en mode `ClusterIP` sur le port `80`.
+
+### 3.4. **Booking-Service**
+- **Déploiement** : Utilise l'image `hamadygackou/booking-service:latest`.
+- **Service** : Exposé en mode `ClusterIP` sur le port `80`.
+
+### 3.5. **Payment-Service**
+- **Déploiement** : Utilise l'image `hamadygackou/payment-service:latest`.
+- **Service** : Exposé en mode `ClusterIP` sur le port `80`.
+
+### 3.6. **Car-Service**
+- **Déploiement** : Utilise l'image `hamadygackou/car-service:latest`.
+- **Service** : Exposé en mode `ClusterIP` sur le port `80`.
+
+## 4. **Sécurité**
+
+### 4.1. **mTLS**
+- **PeerAuthentication** : Active le mTLS pour sécuriser les communications entre les services.
+
+### 4.2. **RBAC**
+- **ClusterRole et ClusterRoleBinding** : Limite les permissions aux utilisateurs et services nécessaires.
+
+### 4.3. **TLS**
+- **Gateway TLS** : Sécurise les communications externes avec des certificats TLS.
+
+## 5. **Optimisation**
+
+### 5.1. **Cycle de Vie**
+- **Création avant destruction** : Minimise les temps d'arrêt lors des mises à jour.
+
+### 5.2. **Ressources**
+- **Limites de ressources** : Définit des limites de CPU et mémoire pour chaque service pour éviter la surconsommation.
+
+## 6. **Conclusion**
+Ce pipeline CI/CD utilise Terraform pour provisionner les ressources sur GCP et Kubernetes pour déployer les services. Les aspects de sécurité comme le mTLS, RBAC, et TLS sont intégrés pour protéger l'application. Les ressources sont optimisées pour minimiser les temps d'arrêt et éviter la surconsommation.
+
 
 ## Comment Contribuer
 1. Clonez le dépôt :
