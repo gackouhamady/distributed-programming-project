@@ -89,7 +89,6 @@ API Gateway : Un point d'entrée unique pour toutes les requêtes, qui les route
 
 Chaque  microservice est  une application autonome et développé séparément . 
 
-## Diagramme d'Architecture 
 
 
 
