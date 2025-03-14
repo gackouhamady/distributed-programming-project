@@ -11,7 +11,7 @@ terraform {
     }
   }
 
-  # Configuration du backend GCS
+  # Configuration du backend GCS :end 
   backend "gcs" {
     bucket = "car-rental-bucket-2"    # Nom du bucket
     prefix = "terraform/state"        # Dossier pour stocker l'état
