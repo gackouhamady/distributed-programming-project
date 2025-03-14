@@ -1,7 +1,23 @@
 # Projet Car-Rental
 
-## Description du Projet
-Le projet **Car-Rental** est une application de location de voitures en ligne qui permet aux utilisateurs de rechercher, réserver et payer des voitures de manière simple et sécurisée. L'application est basée sur une architecture microservices, déployée dans un environnement cloud, et utilise des technologies modernes pour assurer scalabilité, performance et sécurité.
+## Objectif du Projet :
+Le projet **Car-Rental** vise à développer un  backend  sécurisé d’une mini-application de location de voitures. L'application sera basée sur une architecture microservices, déployée dans un environnement cloud, et utilisera des technologies modernes pour assurer scalabilité, performance et sécurité. 
+
+## Contexte Technologique :
+
+- Le projet s'inscrit dans le cadre d'un cours sur les architectures cloud-native et les pratiques DevSecOps. Il met en œuvre les technologies suivantes : 
+
+- Microservices : Développés en Java Spring Boot pour une modularité et une maintenabilité accrues. 
+
+- Docker : Pour la conteneurisation des services. 
+
+- Kubernetes : Pour l'orchestration des conteneurs et la gestion du cluster. 
+
+- Google Cloud Platform (GCP) : Pour l'hébergement de l'infrastructure. 
+
+- Terraform : Pour l'automatisation du déploiement de l'infrastructure (Infrastructure as Code). 
+
+- Service Mesh (Istio) : Pour la gestion de la communication sécurisée entre les services. 
 
 ## Architecture du Projet
 L'application est divisée en plusieurs microservices, chacun ayant une responsabilité spécifique. Voici un aperçu de l'architecture :
