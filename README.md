@@ -197,7 +197,7 @@ Cette etape décrit les étapes du pipeline CI/CD pour déployer  l'application 
 
 Ce pipeline CI/CD utilise Terraform pour provisionner les ressources sur GCP et Kubernetes pour déployer les services. Les aspects de sécurité comme le mTLS, RBAC, et TLS sont intégrés pour protéger l'application. Les ressources sont optimisées pour minimiser les temps d'arrêt et éviter la surconsommation.
 
-Ci  après le code complet du pipeline  :
+Ci  après le code terraform  complet associé au pipeline ci/cd  :
 
 ``` terraform
 terraform {
