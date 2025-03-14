@@ -1110,3 +1110,78 @@ kubectl get svc -n istio-system istio-ingressgateway
 #### 3.Conclusion
 Ce guide permet d'importer des services Kubernetes existants dans l'état de Terraform et de configurer un service mesh avec Istio pour gérer le trafic entre les microservices. Les étapes incluent l'installation d'Istio, la configuration d'un Ingress Gateway unique, et la création de VirtualServices pour chaque microservice. Cette configuration optimise la gestion du trafic et améliore la sécurité et la performance de l'application.
 
+
+
+ 
+
+### Points Clés Réalisés dans  le projet
+
+### 1. **Développement des Microservices**
+- **Services implémentés** : 
+  - `user-service` (Java Spring Boot)
+  - `booking-service` (Node.js)
+  - `payment-service` (Java Spring Boot)
+  - `car-service` (Node.js)
+- **Communication** : REST API pour tous les services. Option gRPC implémentée pour la communication entre `user-service` et `booking-service` (bonus).
+
+### 2. **Dockerisation des Services**
+- **Dockerfile** : Création d'un Dockerfile pour chaque service.
+- **Images Docker** : Les images ont été publiées sur Docker Hub pour faciliter le déploiement.
+  - Exemple : `docker push hamadygackou/user-service:latest`
+
+### 3. **Déploiement avec Kubernetes**
+- **Déploiements Kubernetes** : Chaque service a été déployé en tant que déploiement Kubernetes.
+- **Services Kubernetes** : Création de services pour exposer les microservices.
+  Ces operations ont été automatisé dans  le code terraform associé au pipeline ci/cd 
+- **Ingress Controller** : Configuration d'un Ingress pour gérer le trafic entrant.
+  - Exemple : `kubectl apply -f gateway.yaml` pour  api gateway
+               `kubectl apply -f virtual-service.yaml` pour  router vers les microservices
+
+### 4. **Service Mesh avec Istio**
+- **Installation d'Istio** : Istio a été installé pour gérer le trafic entre les services.
+- **Gateway et VirtualServices** : Configuration d'un Gateway et de VirtualServices pour router le trafic.
+  - Exemple : 
+    ```yaml
+    apiVersion: networking.istio.io/v1alpha3
+    kind: Gateway
+    metadata:
+      name: app-gateway
+      namespace: default
+    spec:
+      selector:
+        istio: ingressgateway
+      servers:
+        - port:
+            number: 80
+            name: http
+            protocol: HTTP
+          hosts:
+            - "*"
+    ```
+  - Appliqué avec : `kubectl apply -f gateway.yaml`
+
+### 5. **Base de Données**
+- **MySQL** : Déploiement d'une base de données MySQL dans GKE  pour stocker les données des utilisateurs et des réservations.
+  - Exemple : `kubectl apply -f mysql-deployment.yaml`
+- **PersistentVolume** : Utilisation de PersistentVolume pour assurer la persistance des données.
+  - Exemple : `kubectl apply -f mysql-pv.yaml`
+
+### 6. **Sécurité**
+- **RBAC** : Configuration des rôles et des permissions pour sécuriser l'accès aux ressources Kubernetes. 
+- **mTLS** : Activation du mTLS pour sécuriser les communications entre les services.
+  Ces operations de sécurité sont gérés dans  le code terraform  associé au pipeline ci/cd
+  
+### 7. **Tests et Validation**
+- **Tests Locaux** : Les services ont été testés localement avant le déploiement sur Kubernetes.
+- **Tests sur Cluster** : Validation du bon fonctionnement des services et de la configuration du service mesh.
+  - Commandes : 
+    ```bash
+    kubectl get pods -n istio-system
+    kubectl get svc -n istio-system istio-ingressgateway
+    ```
+
+---
+
+## Conclusion
+
+Ce projet a permis de mettre en place une architecture de microservices sécurisée et scalable en utilisant Kubernetes   et Istio. Les points clés réalisés incluent le développement des services, leur dockerisation, leur déploiement sur Kubernetes, la configuration d'un service mesh, l'intégration d'une base de données, et la mise en place de mesures de sécurité. Ces étapes ont été validées par des tests locaux et sur cluster, assurant ainsi le bon fonctionnement  des microservices.
