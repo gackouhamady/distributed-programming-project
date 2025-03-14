@@ -60,7 +60,6 @@ resource "google_compute_instance" "terraform" {
   }
 }
 
-
 # Déploiement Kubernetes pour MySQL
 resource "kubernetes_deployment" "mysql" {
   metadata {
@@ -217,7 +216,6 @@ resource "kubernetes_deployment" "user-service" {
     create_before_destroy = true  # Créer le nouveau déploiement avant de détruire l'ancien
   }
 }
-
 
 # Déploiement Kubernetes pour phpMyAdmin
 resource "kubernetes_deployment" "phpmyadmin" {
@@ -558,13 +556,21 @@ resource "kubernetes_service" "car-service" {
   }
 }
 
+# Création du namespace istio-system s'il n'existe pas déjà
+resource "kubernetes_namespace" "istio_system" {
+  metadata {
+    name = "istio-system"
+  }
+}
+
 # Configuration Istio Gateway
 resource "kubernetes_manifest" "istio_gateway" {
   manifest = {
     apiVersion = "networking.istio.io/v1alpha3"
     kind       = "Gateway"
     metadata = {
-      name = "car-rental-gateway"
+      name      = "car-rental-gateway"
+      namespace = kubernetes_namespace.istio_system.metadata[0].name  # Utilisation du namespace istio-system
     }
     spec = {
       selector = {
@@ -590,7 +596,8 @@ resource "kubernetes_manifest" "istio_virtual_service" {
     apiVersion = "networking.istio.io/v1alpha3"
     kind       = "VirtualService"
     metadata = {
-      name = "car-rental-vs"
+      name      = "car-rental-vs"
+      namespace = kubernetes_namespace.istio_system.metadata[0].name  # Utilisation du namespace istio-system
     }
     spec = {
       hosts    = ["*"]
