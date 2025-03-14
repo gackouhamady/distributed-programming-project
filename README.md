@@ -103,7 +103,6 @@ Chaque  microservice est  une application autonome et développé séparément .
 ### Infrastructure
 - **Google Cloud Platform (GCP)** :
   - **Google Kubernetes Engine (GKE)** : Pour héberger le cluster Kubernetes.
-  - **Cloud SQL** : Pour la base de données MySQL/PostgreSQL.
   - **Cloud Storage** : Optionnel, pour stocker des fichiers (par exemple, des images de voitures).
 - **Service Mesh (Istio)** : Pour la communication sécurisée entre les services.
 
