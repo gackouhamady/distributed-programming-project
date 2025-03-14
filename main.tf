@@ -34,7 +34,7 @@ provider "helm" {
   }
 }
 
-# Création de l'instance GCE uniquement si elle n'existe pas déjà
+# Création de l'in-stance GCE uniquement si elle n'existe pas déjà
 resource "google_compute_instance" "terraform" {
   name         = "terraform"
   machine_type = "e2-medium"
