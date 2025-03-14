@@ -165,6 +165,35 @@ jobs:
           docker build -t $DOCKER_IMAGE -f car-service/Dockerfile car-service/
           docker push $DOCKER_IMAGE
 
+
+          - name: Set up Docker
+          uses: docker/setup-buildx-action@v1
+    
+          - name: Scan Docker images with Trivy
+            run: |
+              # Liste des images Docker à scanner
+              images=(
+                "hamadygackou/user-service:latest"
+                "hamadygackou/booking-service:latest"
+                "hamadygackou/payment-service:latest"
+                "hamadygackou/car-service:latest"
+                "hamadygackou/mysql-custom:latest"
+                "phpmyadmin/phpmyadmin:latest"
+              )
+    
+              # Scanner chaque image avec Trivy
+              for image in "${images[@]}"; do
+                echo "Scanning $image..."
+                docker run --rm -v $(pwd):/host aquasec/trivy image "$image"
+                if [ $? -ne 0 ]; then
+                  echo "Trivy scan failed for $image"
+                  exit 1
+                fi
+                echo "----------------------------------------"
+              done
+    
+              echo "All images scanned successfully."
+
       # Step 4: Authenticate to Google Cloud
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
