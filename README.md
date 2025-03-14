@@ -19,7 +19,7 @@ Le projet **Car-Rental** vise à développer un  backend  sécurisé d’une min
 
 - Service Mesh (Istio) : Pour la gestion de la communication sécurisée entre les services. 
 
-## Architecture du Projet
+## Architecture simplifiée du Projet 
 L'application est divisée en plusieurs microservices, chacun ayant une responsabilité spécifique. Voici un aperçu de l'architecture :
    ```
 +-------------------+       +-------------------+       +-------------------+
@@ -63,23 +63,40 @@ L'application est divisée en plusieurs microservices, chacun ayant une responsa
 ### Diagramme d'Architecture
 ![Architecture Car-Rental](architecture_car_rental.png)
 
-### Composants Principaux
-1. **Client** : L'interface utilisateur (navigateur web ou application mobile) interagit avec l'application via des API REST.
-2. **API Gateway** : Un point d'entrée unique pour toutes les requêtes, qui les route vers les microservices appropriés.
-3. **Microservices** :
-   - **User Service** : Gère l'authentification et les informations des utilisateurs.
-   - **Car Service** : Gère le catalogue des voitures disponibles.
-   - **Booking Service** : Gère les réservations de voitures.
-   - **Payment Service** : Gère les transactions de paiement.
-4. **Base de Données** : Une base de données relationnelle (MySQL ou PostgreSQL) stocke les données des utilisateurs, des voitures et des réservations.
-5. **Cluster Kubernetes** : Les microservices sont déployés dans un cluster Kubernetes hébergé sur Google Kubernetes Engine (GKE).
-6. **Service Mesh (Istio)** : Facultatif, pour la gestion de la communication sécurisée entre les services.
-7. **Terraform** : Automatise le déploiement de l'infrastructure sur GCP.
+## Architecture Globale :
+
+L'application est divisée en plusieurs microservices, chacun ayant une responsabilité spécifique. L'architecture globale est la suivante : 
+
+API Gateway : Un point d'entrée unique pour toutes les requêtes, qui les route vers les microservices appropriés. 
+
+### Microservices : 
+
+- User Service : Gère l'authentification et les informations des utilisateurs. 
+
+- Car Service : Gère le catalogue des voitures disponibles. 
+
+- Booking Service : Gère les réservations de voitures. 
+
+- Payment Service : Gère les transactions de paiement. 
+
+- Base de Données : Une base de données relationnelle (MySQL) stocke les données des utilisateurs, des voitures et des réservations. 
+
+- Cluster Kubernetes : Les microservices sont déployés dans un cluster Kubernetes hébergé sur Google Kubernetes Engine (GKE). 
+
+- Service Mesh (Istio) : Pour la gestion de la communication sécurisée entre les services et la configuration de l'api  gateway + virtual gateway vers les microservices. 
+
+- Terraform : Automatise le déploiement de l'infrastructure sur GCP. 
+
+Chaque  microservice est  une application autonome et développé séparément . 
+
+## Diagramme d'Architecture 
+
+
 
 ## Technologies Utilisées
 ### Développement
 - **Java Spring Boot** : Framework pour développer les microservices REST.
-- **Spring Cloud Gateway** : Pour implémenter l'API Gateway.
+- **Service Mesh Istio** : Pour implémenter l'API Gateway.
 - **Docker** : Pour conteneuriser les microservices.
 - **Kubernetes** : Pour orchestrer les conteneurs et gérer le cluster.
 - **Terraform** : Pour l'automatisation de l'infrastructure.
