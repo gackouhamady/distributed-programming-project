@@ -909,6 +909,300 @@ resource "kubernetes_service" "car-service" {
 ```
 
 
+# Sécurité des Images Docker : Intégration du Scan avec Trivy
+
+Dans le cadre de ce projet, la sécurité des images Docker est une priorité. Pour garantir que les images déployées ne contiennent pas de vulnérabilités critiques, nous avons intégré un processus de scan des images Docker à l'aide de **Trivy**, un outil open-source de scan de vulnérabilités. Cette étape est cruciale pour identifier et corriger les failles de sécurité avant le déploiement en production.
+
+---
+
+## Pourquoi Scanner les Images Docker ?
+
+Les images Docker peuvent contenir des vulnérabilités provenant des dépendances ou des couches de base utilisées. Scanner ces images permet de :
+- **Détecter les vulnérabilités connues** dans les packages installés.
+- **Éviter les risques de sécurité** liés à des failles critiques.
+- **Garantir la conformité** avec les bonnes pratiques de sécurité.
+
+---
+
+## Intégration de Trivy dans le Pipeline CI/CD
+
+Le scan des images Docker est intégré directement dans le pipeline CI/CD après la construction des images et avant leur déploiement. Voici le code ajouté pour cette étape :
+
+```yaml
+- name: Set up Docker
+  uses: docker/setup-buildx-action@v1
+
+- name: Scan Docker images with Trivy
+  run: |
+    # Liste des images Docker à scanner
+    images=(
+      "hamadygackou/user-service:latest"
+      "hamadygackou/booking-service:latest"
+      "hamadygackou/payment-service:latest"
+      "hamadygackou/car-service:latest"
+      "hamadygackou/mysql-custom:latest"
+      "phpmyadmin/phpmyadmin:latest"
+    )
+
+    # Scanner chaque image avec Trivy
+    for image in "${images[@]}"; do
+      echo "Scanning $image..."
+      docker run --rm -v $(pwd):/host aquasec/trivy image "$image"
+      if [ $? -ne 0 ]; then
+        echo "Trivy scan failed for $image"
+        exit 1
+      fi
+      echo "----------------------------------------"
+    done
+
+    echo "All images scanned successfully."
+```
+Voci le code complet du pipeline ci/cd :
+```yaml
+name: Build, Test, Push, and Deploy with Terraform
+
+on:
+  push:
+    branches:
+      - test
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Login to Docker Hub
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # Step 3: Build, Test and Push Docker images for all services
+
+      # Build user-service
+      - name: Set up JDK 21 for user-service
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin' # Specify the Java distribution
+
+      - name: Make gradlew executable for user-service
+        run: |
+             ls -la 
+             chmod +x ./user-service/gradlew
+
+      - name: Cache Gradle dependencies for user-service
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('user-service/**/*.gradle*', 'user-service/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build user-service
+        working-directory: ./user-service
+        run: |
+             ls -la
+             ./gradlew build
+
+      - name: Run tests for user-service
+        working-directory: ./user-service
+        run: |
+            ls -la 
+             ./gradlew test
+
+      - name: Build and push Docker image for user-service
+        run: |
+          IMAGE_NAME=user-service
+          IMAGE_TAG=latest
+          DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
+          docker build -t $DOCKER_IMAGE -f user-service/Dockerfile user-service/
+          docker push $DOCKER_IMAGE
+
+      # Build booking-service
+      - name: Set up JDK 21 for booking-service
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable for booking-service
+        run: chmod +x ./booking-service/gradlew
+
+      - name: Cache Gradle dependencies for booking-service
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('booking-service/**/*.gradle*', 'booking-service/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build booking-service
+        working-directory: ./booking-service
+        run: ./gradlew build
+
+      - name: Run tests for booking-service
+        working-directory: ./booking-service
+        run: ./gradlew test
+
+      - name: Build and push Docker image for booking-service
+        run: |
+          IMAGE_NAME=booking-service
+          IMAGE_TAG=latest
+          DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
+          docker build -t $DOCKER_IMAGE -f booking-service/Dockerfile booking-service/
+          docker push $DOCKER_IMAGE
+
+      # Build payment-service
+      - name: Set up JDK 21 for payment-service
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable for payment-service
+        run: chmod +x ./payment-service/gradlew
+
+      - name: Cache Gradle dependencies for payment-service
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('payment-service/**/*.gradle*', 'payment-service/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build payment-service
+        working-directory: ./payment-service
+        run: ./gradlew build
+
+      - name: Run tests for payment-service
+        working-directory: ./payment-service
+        run: ./gradlew test
+
+      - name: Build and push Docker image for payment-service
+        run: |
+          IMAGE_NAME=payment-service
+          IMAGE_TAG=latest
+          DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
+          docker build -t $DOCKER_IMAGE -f payment-service/Dockerfile payment-service/
+          docker push $DOCKER_IMAGE
+
+      # Build car-service
+      - name: Set up JDK 21 for car-service
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable for car-service
+        run: chmod +x ./car-service/gradlew
+
+      - name: Cache Gradle dependencies for car-service
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('car-service/**/*.gradle*', 'car-service/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build car-service
+        working-directory: ./car-service
+        run: ./gradlew build
+
+      - name: Run tests for car-service
+        working-directory: ./car-service
+        run: ./gradlew test
+
+      - name: Build and push Docker image for car-service
+        run: |
+          IMAGE_NAME=car-service
+          IMAGE_TAG=latest
+          DOCKER_IMAGE=${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
+          docker build -t $DOCKER_IMAGE -f car-service/Dockerfile car-service/
+          docker push $DOCKER_IMAGE
+
+
+          - name: Set up Docker
+          uses: docker/setup-buildx-action@v1
+    
+          - name: Scan Docker images with Trivy
+            run: |
+              # Liste des images Docker à scanner
+              images=(
+                "hamadygackou/user-service:latest"
+                "hamadygackou/booking-service:latest"
+                "hamadygackou/payment-service:latest"
+                "hamadygackou/car-service:latest"
+                "hamadygackou/mysql-custom:latest"
+                "phpmyadmin/phpmyadmin:latest"
+              )
+    
+              # Scanner chaque image avec Trivy
+              for image in "${images[@]}"; do
+                echo "Scanning $image..."
+                docker run --rm -v $(pwd):/host aquasec/trivy image "$image"
+                if [ $? -ne 0 ]; then
+                  echo "Trivy scan failed for $image"
+                  exit 1
+                fi
+                echo "----------------------------------------"
+              done
+    
+              echo "All images scanned successfully."
+
+      # Step 4: Authenticate to Google Cloud
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      # Step 5: Set up Google Cloud SDK
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      # Step 6: Set up kubectl
+      - name: Set up kubectl
+        run: |
+          gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} \
+            --region ${{ secrets.GKE_REGION }} \
+            --project ${{ secrets.GCP_PROJECT_ID }}
+
+      # Step 7: Install Terraform
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: "1.1.0"
+
+      # Step 8: Initialize Terraform avec le backend GCS
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Install GKE Auth Plugin
+        run: gcloud components install gke-gcloud-auth-plugin
+
+      - name: Update kubeconfig
+        run: |
+          export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+          gcloud container clusters get-credentials car-rental-cluster \
+            --region europe-west1 \
+            --project car-rental-project-453100
+
+      # Step 9: Plan Terraform
+      - name: Plan Terraform
+        run: terraform plan -lock=false
+#  End all 
+      # Step 10: Apply Terraform
+      - name: Apply Terraform
+        run: terraform apply -auto-approve -lock=false
+```
+
 ## Importation des Services Kubernetes dans Terraform et Configuration du Service Mesh avec Istio
 
 Cette etape explique comment importer des services Kubernetes existants dans l'état de Terraform et configurer un service mesh avec Istio pour gérer le trafic entre les microservices.
@@ -1114,7 +1408,7 @@ Ce guide permet d'importer des services Kubernetes existants dans l'état de Ter
 
  
 
-### Points Clés Réalisés dans  le projet
+## Points Clés Réalisés dans  le projet
 
 ### 1. **Développement des Microservices**
 - **Services implémentés** : 
