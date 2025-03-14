@@ -113,9 +113,9 @@ Chaque  microservice est  une application autonome et développé séparément .
 - **mTLS (Mutual TLS)** : Pour chiffrer la communication entre les services.
 - **Docker Content Trust** : Pour signer et vérifier les images Docker.
 
-# Pipeline CI/CD avec Terraform et Kubernetes
+## Pipeline CI/CD avec Terraform et Kubernetes
 
-Ce document décrit les étapes du pipeline CI/CD pour déployer une application de location de voitures sur Google Cloud Platform (GCP) en utilisant Terraform et Kubernetes. Le pipeline inclut des aspects de sécurité et d'optimisation.
+Cette etape décrit les étapes du pipeline CI/CD pour déployer  l'application de location de voitures sur Google Cloud Platform (GCP) en utilisant Terraform et Kubernetes. Le pipeline inclut des aspects de sécurité et d'optimisation.
 
 ## 1. **Configuration de Terraform**
 
@@ -200,7 +200,4 @@ Ce document décrit les étapes du pipeline CI/CD pour déployer une application
 Ce pipeline CI/CD utilise Terraform pour provisionner les ressources sur GCP et Kubernetes pour déployer les services. Les aspects de sécurité comme le mTLS, RBAC, et TLS sont intégrés pour protéger l'application. Les ressources sont optimisées pour minimiser les temps d'arrêt et éviter la surconsommation.
 
 
-## Comment Contribuer
-1. Clonez le dépôt :
-   ```bash
-   git clone https://github.com/votre-utilisateur/car-rental.git
+ 
