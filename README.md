@@ -24,7 +24,7 @@ L'application est divisée en plusieurs microservices, chacun ayant une responsa
    ```
 +-------------------+       +-------------------+       +-------------------+
 |    Client         | ----> | API Gateway       | ----> | User Service      |
-| (Navigateur/App)  |       | (Spring Cloud)    |       | (Spring Boot)     |
+| (Navigateur/App)  |       | (Istio gateway )    |       | (Spring Boot)     |
 +-------------------+       +-------------------+       +-------------------+
                                 |                           |
                                 v                           v
@@ -36,7 +36,7 @@ L'application est divisée en plusieurs microservices, chacun ayant une responsa
                                 v                           v
                     +-------------------+       +-------------------+
                     | Payment Service   |       | Base de Données   |
-                    | (Spring Boot)    |       | (Cloud SQL)       |
+                    | (Spring Boot)    |       | (MySQL dans un conteneur GKE)       |
                     +-------------------+       +-------------------+
                                 |
                                 v
