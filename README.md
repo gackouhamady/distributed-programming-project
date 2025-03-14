@@ -910,4 +910,204 @@ resource "kubernetes_service" "car-service" {
 ```
 
 
- 
+## Importation des Services Kubernetes dans Terraform et Configuration du Service Mesh avec Istio
+
+Cette explique comment importer des services Kubernetes existants dans l'état de Terraform et configurer un service mesh avec Istio pour gérer le trafic entre les microservices.
+
+---
+
+## 1. **Importation des Services Kubernetes dans Terraform**
+
+### 1.1. **Prérequis**
+- **Terraform** doit être installé sur la machine.
+- **kubectl** doit être configuré pour accéder au cluster Kubernetes.
+- Un fichier `main.tf` doit être configuré avec les ressources Kubernetes.
+
+### 1.2. **Services à Importer**
+Les services suivants existent déjà dans le namespace `default` et doivent être importés dans l'état de Terraform :
+1. `mysql`
+2. `phpmyadmin`
+3. `booking-service`
+4. `payment-service`
+5. `car-service`
+6. `user-service`
+7. `ingress-nginx-controller`
+
+### 1.3. **Commandes pour Importer les Services**
+Exécutez les commandes suivantes pour importer chaque service dans l'état de Terraform :
+
+```bash
+# Importer les services
+terraform import kubernetes_service.mysql default/mysql
+terraform import kubernetes_service.phpmyadmin default/phpmyadmin
+terraform import kubernetes_service.booking-service default/booking-service
+terraform import kubernetes_service.payment-service default/payment-service
+terraform import kubernetes_service.car-service default/car-service
+terraform import kubernetes_service.user-service default/user-service
+terraform import kubernetes_service.ingress-nginx-controller ingress-nginx/ingress-nginx-controller
+
+# Vérifier l'état
+terraform state list
+
+# Planifier et appliquer
+terraform plan
+terraform apply
+```
+
+### Configuration du Service Mesh avec Istio
+
+1. **Installer Istio**.
+2. **Configurer un Ingress Gateway unique** pour les microservices (`user`, `booking`, `payment`, `car`).
+3. **Laisser `mysql` et `phpmyadmin` en mode `LoadBalancer`**.
+
+---
+
+#### 1. **Prérequis**
+
+- Un cluster Kubernetes fonctionnel.
+- `kubectl` configuré pour accéder à votre cluster.
+- `istioctl` installé (voir les étapes ci-dessous).
+
+---
+
+#### 2. **Installation d'Istio**
+
+#### 2.1. **Télécharger Istio**
+Téléchargez la dernière version d'Istio :
+
+```bash
+curl -L https://istio.io/downloadIstio | sh -
+```
+#### 2.2.2. Installer Istio
+Accédez au répertoire Istio et installez-le 
+```bash 
+cd istio-<VERSION>
+export PATH=$PWD/bin:$PATH
+istioctl install --set profile=default -y
+```
+
+
+### 2.2.3. Vérifier l'Installation
+Vérifiez que les pods Istio sont en cours d'exécution :
+```bash
+kubectl get pods -n istio-system
+```
+#### 2.3. Configuration d'un Ingress Gateway Unique
+#### 2.3.1. Créer un Gateway
+Créez un fichier gateway.yaml pour définir un Gateway unique qui écoutera sur le port 80 (HTTP) ou 443 (HTTPS) :
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: app-gateway
+  namespace: default
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*"
+ ```
+
+Appliquez la configuration :
+
+```bash
+kubectl apply -f gateway.yaml
+```
+
+#### 2.4. Configuration des VirtualServices pour les Microservices
+2.4.1. VirtualService pour user-service
+Créez un fichier user-virtualservice.yaml :
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: user-virtualservice
+  namespace: default
+spec:
+  hosts:
+    - "user.example.com"
+  gateways:
+    - app-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: user-service.default.svc.cluster.local
+            port:
+              number: 80
+```
+Appliquez la configuration :
+
+```bash
+kubectl apply -f user-virtualservice.yaml
+```
+### 2.4.2. VirtualService pour tous les microservices
+Créez un fichier car-rental-vs.yaml pour gérer les routes de tous les microservices :
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: car-rental-vs
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - car-rental-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /booking
+      route:
+        - destination:
+            host: booking-service.default.svc.cluster.local
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /car
+      route:
+        - destination:
+            host: car-service.default.svc.cluster.local
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /user
+      route:
+        - destination:
+            host: user-service.default.svc.cluster.local
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /payment
+      route:
+        - destination:
+            host: payment-service.default.svc.cluster.local
+            port:
+              number: 80
+```
+Appliquez la configuration :
+
+```bash
+kubectl apply -f car-rental-vs.yaml
+```
+#### 2.5. Tester la Configuration
+Obtenez l'adresse IP de l'Istio Ingress Gateway pour tester la configuration :
+
+```bash
+kubectl get svc -n istio-system istio-ingressgateway
+```
+#### 3.Conclusion
+Ce guide permet d'importer des services Kubernetes existants dans l'état de Terraform et de configurer un service mesh avec Istio pour gérer le trafic entre les microservices. Les étapes incluent l'installation d'Istio, la configuration d'un Ingress Gateway unique, et la création de VirtualServices pour chaque microservice. Cette configuration optimise la gestion du trafic et améliore la sécurité et la performance de l'application.
+
