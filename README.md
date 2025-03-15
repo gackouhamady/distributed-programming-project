@@ -9,7 +9,7 @@
 
 
 <div align="center">
-    <img src="u.png" alt="Logo Université" width="400" style="float:left; margin-right: 330px;">
+    <img src="u.png" alt="Logo Université" width="400" style="float:left; margin-right: 200px;">
     <img src="f.jpeg" alt="Logo Formation" width="400" style="float:right;">
 </div>
 
