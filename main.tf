@@ -639,3 +639,6 @@ resource "kubernetes_service" "car-service" {
     create_before_destroy = true  # Créer le nouveau service avant de détruire l'ancien
   }
 }
+
+
+### End project 
