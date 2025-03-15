@@ -28,7 +28,7 @@
 
 
 
-<br/><br/><br/>  
+<br/><br/>
 
 ## Objectif du Projet :
 Le projet **Car-Rental** vise à développer un backend sécurisé d’une mini-application de location de voitures.  
