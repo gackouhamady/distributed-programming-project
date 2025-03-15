@@ -1,9 +1,13 @@
 # Rapport Projet Car-Rental  
 
-<div align="center">
-    <img src="u.png" alt="Logo Université " width="150" style="float:left; pagging:500 px;">
-    <img src="f.jpeg" alt="Logo Formation" width="150" style="float:right;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px;">
+    <img src="u.png" alt="Logo Université" width="150" style="margin-left: 100px;">
+    <img src="f.jpeg" alt="Logo Formation" width="150" style="margin-right: 100px;">
 </div>  
+
+## Objectif du Projet :
+Le projet **Car-Rental** vise à développer un backend sécurisé d’une mini-application de location de voitures.  
+L'application est basée sur une architecture microservices, déployée dans un environnement cloud, et utilise des technologies modernes pour assurer la scalabilité, la performance et la sécurité.  
 
 <br/><br/><br/>  
 
