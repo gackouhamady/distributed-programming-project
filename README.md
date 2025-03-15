@@ -1,8 +1,16 @@
-# Rapport Projet Car-Rental  
+# 📊 Rapport du Projet Programmation distribué  : Car-Rental Project
+
+
+| **Catégorie**    | **Détails** |
+|-----------------|------------|
+| **Auteur**      | Hamady GACKOU |
+| **Encadrant**   | Benoit Charroux |
+| **Établissement** | Université Paris Cité, UFR : Sciences fondamentales et biomédicales, M1 : AMSD |
+
 
 <div align="center">
-    <img src="u.png" alt="Logo Université" width="800" style="float:left; margin-right: 330px;">
-    <img src="f.jpeg" alt="Logo Formation" width="800" style="float:right;">
+    <img src="u.png" alt="Logo Université" width="400" style="float:left; margin-right: 330px;">
+    <img src="f.jpeg" alt="Logo Formation" width="400" style="float:right;">
 </div>
 
 
