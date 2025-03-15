@@ -1,17 +1,35 @@
-# 📊 Rapport du Projet Programmation distribué  : Car-Rental Project
+# 📊 Rapport du Projet Programmation Distribuée : Car-Rental Project
 
+## 📝 Informations du Projet
 
-| **Catégorie**    | **Détails** |
-|-----------------|------------|
-| **Auteur**      | Hamady GACKOU |
-| **Encadrant**   | Benoit Charroux |
-| **Établissement** | Université Paris Cité, UFR : Sciences fondamentales et biomédicales, M1 : AMSD |
+<table style="width:100%; border-collapse: collapse; text-align: left;">
+    <tr style="background-color: #2E2E2E; color: white;">
+        <th style="padding: 10px; border: 1px solid #ddd;">Catégorie</th>
+        <th style="padding: 10px; border: 1px solid #ddd;">Détails</th>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Auteur</strong></td>
+        <td style="padding: 10px; border: 1px solid #ddd;">Hamady GACKOU</td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Encadrant</strong></td>
+        <td style="padding: 10px; border: 1px solid #ddd;">Benoit Charroux</td>
+    </tr>
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ddd;"><strong>Établissement</strong></td>
+        <td style="padding: 10px; border: 1px solid #ddd;">Université Paris Cité, UFR : Sciences fondamentales et biomédicales, M1 : AMSD</td>
+    </tr>
+</table>
 
+<br/>
+
+## 🎓 Logos des Institutions
 
 <div align="center">
-    <img src="u.png" alt="Logo Université" width="400" style="float:left; margin-right: 0px;">
-    <img src="f.jpeg" alt="Logo Formation" width="400" style="float:right;">
+    <img src="u.png" alt="Logo Université" width="300" style="margin-right: 50px;">
+    <img src="f.jpeg" alt="Logo Formation" width="300" style="margin-left: 50px;">
 </div>
+
 
 
 <br/><br/><br/>  
