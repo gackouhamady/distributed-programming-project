@@ -92,7 +92,7 @@ L'application est divisée en plusieurs microservices, chacun ayant une responsa
 
    ```
 
-### Diagramme d'Architecture
+## Diagramme d'Architecture
 ![Architecture Car-Rental](architecture_car_rental.png)
 
 ## Architecture Globale :
@@ -146,83 +146,83 @@ Chaque  microservice est  une application autonome et développé séparément .
 
 Cette etape décrit les étapes du pipeline CI/CD pour déployer  l'application sur Google Cloud Platform (GCP) en utilisant Terraform et Kubernetes. Le pipeline inclut des aspects de sécurité et d'optimisation.
 
-## 1. **Configuration de Terraform**
+### 1. **Configuration de Terraform**
 
-### 1.1. **Fournisseurs**
+#### 1.1. **Fournisseurs**
 - **Google Cloud** : Utilisé pour gérer les ressources GCP.
 - **Kubernetes** : Pour déployer et gérer les ressources Kubernetes.
 - **Helm** : Pour gérer les charts Helm dans le cluster Kubernetes.
 
-### 1.2. **Backend GCS**
+#### 1.2. **Backend GCS**
 - **Bucket** : `car-rental-bucket-2` pour stocker l'état de Terraform.
 - **Prefix** : `terraform/state` pour organiser les fichiers d'état.
 
-### 1.3. **Configuration des Providers**
+#### 1.3. **Configuration des Providers**
 - **Google** : Projet `car-rental-project-453100`, région `europe-west1`, zone `europe-west1-c`.
 - **Kubernetes** : Utilise le fichier de configuration `~/.kube/config`.
 - **Helm** : Utilise également `~/.kube/config`.
 
-## 2. **Déploiement des Ressources**
+### 2. **Déploiement des Ressources**
 
-### 2.1. **Instance GCE**
+#### 2.1. **Instance GCE**
 - **Nom** : `terraform`
 - **Type de machine** : `e2-medium`
 - **Image** : `debian-cloud/debian-11`
 - **Réseau** : `default` avec une IP publique.
 - **Cycle de vie** : Création avant destruction pour éviter les temps d'arrêt.
 
-### 2.2. **ClusterRole et ClusterRoleBinding**
+#### 2.2. **ClusterRole et ClusterRoleBinding**
 - **ClusterRole** : `cluster-admin` avec accès à toutes les ressources.
 - **ClusterRoleBinding** : Associe `cluster-admin` à l'utilisateur `admin`.
 
-### 2.3. **PeerAuthentication et Gateway TLS**
+#### 2.3. **PeerAuthentication et Gateway TLS**
 - **PeerAuthentication** : Active le mTLS en mode `STRICT` dans `istio-system`.
 - **Gateway TLS** : Configure une passerelle TLS pour `example.com` avec un certificat `my-certificate`.
 
-## 3. **Déploiement des Services**
+### 3. **Déploiement des Services**
 
-### 3.1. **MySQL**
+#### 3.1. **MySQL**
 - **Déploiement** : Utilise l'image `hamadygackou/mysql-custom:latest`.
 - **Service** : Exposé en mode `LoadBalancer` sur le port `3306`.
 - **Stockage** : Utilise un `PersistentVolumeClaim` pour `/var/lib/mysql`.
 
-### 3.2. **phpMyAdmin**
+#### 3.2. **phpMyAdmin**
 - **Déploiement** : Utilise l'image `phpmyadmin/phpmyadmin`.
 - **Service** : Exposé en mode `LoadBalancer` sur le port `80`.
 
-### 3.3. **User-Service**
+#### 3.3. **User-Service**
 - **Déploiement** : Utilise l'image `hamadygackou/user-service:latest`.
 - **Service** : Exposé en mode `ClusterIP` sur le port `80`.
 
-### 3.4. **Booking-Service**
+#### 3.4. **Booking-Service**
 - **Déploiement** : Utilise l'image `hamadygackou/booking-service:latest`.
 - **Service** : Exposé en mode `ClusterIP` sur le port `80`.
 
-### 3.5. **Payment-Service**
+#### 3.5. **Payment-Service**
 - **Déploiement** : Utilise l'image `hamadygackou/payment-service:latest`.
 - **Service** : Exposé en mode `ClusterIP` sur le port `80`.
 
-### 3.6. **Car-Service**
+#### 3.6. **Car-Service**
 - **Déploiement** : Utilise l'image `hamadygackou/car-service:latest`.
 - **Service** : Exposé en mode `ClusterIP` sur le port `80`.
 
-## 4. **Sécurité**
+### 4. **Sécurité**
 
-### 4.1. **mTLS**
+#### 4.1. **mTLS**
 - **PeerAuthentication** : Active le mTLS pour sécuriser les communications entre les services.
 
-### 4.2. **RBAC**
+#### 4.2. **RBAC**
 - **ClusterRole et ClusterRoleBinding** : Limite les permissions aux utilisateurs et services nécessaires.
 
-### 4.3. **TLS**
+#### 4.3. **TLS**
 - **Gateway TLS** : Sécurise les communications externes avec des certificats TLS.
 
-## 5. **Optimisation**
+### 5. **Optimisation**
 
-### 5.1. **Cycle de Vie**
+#### 5.1. **Cycle de Vie**
 - **Création avant destruction** : Minimise les temps d'arrêt lors des mises à jour.
 
-### 5.2. **Ressources**
+#### 5.2. **Ressources**
 - **Limites de ressources** : Définit des limites de CPU et mémoire pour chaque service pour éviter la surconsommation.
 
 Ce pipeline CI/CD utilise Terraform pour provisionner les ressources sur GCP et Kubernetes pour déployer les services. Les aspects de sécurité comme le mTLS, RBAC, et TLS sont intégrés pour protéger l'application. Les ressources sont optimisées pour minimiser les temps d'arrêt et éviter la surconsommation.
@@ -940,13 +940,13 @@ resource "kubernetes_service" "car-service" {
 ```
 
 
-# Sécurité des Images Docker : Intégration du Scan avec Trivy
+## Sécurité des Images Docker : Intégration du Scan avec Trivy
 
 Dans le cadre de ce projet, la sécurité des images Docker est une priorité. Pour garantir que les images déployées ne contiennent pas de vulnérabilités critiques, nous avons intégré un processus de scan des images Docker à l'aide de **Trivy**, un outil open-source de scan de vulnérabilités. Cette étape est cruciale pour identifier et corriger les failles de sécurité avant le déploiement en production.
 
 ---
 
-## Pourquoi Scanner les Images Docker ?
+### Pourquoi Scanner les Images Docker ?
 
 Les images Docker peuvent contenir des vulnérabilités provenant des dépendances ou des couches de base utilisées. Scanner ces images permet de :
 - **Détecter les vulnérabilités connues** dans les packages installés.
@@ -955,7 +955,7 @@ Les images Docker peuvent contenir des vulnérabilités provenant des dépendanc
 
 ---
 
-## Intégration de Trivy dans le Pipeline CI/CD
+### Intégration de Trivy dans le Pipeline CI/CD
 
 Le scan des images Docker est intégré directement dans le pipeline CI/CD après la construction des images et avant leur déploiement. Voici le code ajouté pour cette étape :
 
@@ -1240,14 +1240,14 @@ Cette etape explique comment importer des services Kubernetes existants dans l'�
 
 ---
 
-## 1. **Importation des Services Kubernetes dans Terraform**
+### 1. **Importation des Services Kubernetes dans Terraform**
 
-### 1.1. **Prérequis**
+#### 1.1. **Prérequis**
 - **Terraform** doit être installé sur la machine.
 - **kubectl** doit être configuré pour accéder au cluster Kubernetes.
 - Un fichier `main.tf` doit être configuré avec les ressources Kubernetes.
 
-### 1.2. **Services à Importer**
+#### 1.2. **Services à Importer**
 Les services suivants existent déjà dans le namespace `default` et doivent être importés dans l'état de Terraform :
 1. `mysql`
 2. `phpmyadmin`
@@ -1257,7 +1257,7 @@ Les services suivants existent déjà dans le namespace `default` et doivent êt
 6. `user-service`
 7. `ingress-nginx-controller`
 
-### 1.3. **Commandes pour Importer les Services**
+#### 1.3. **Commandes pour Importer les Services**
 Exécutez les commandes suivantes pour importer chaque service dans l'état de Terraform :
 
 ```bash
@@ -1278,7 +1278,7 @@ terraform plan
 terraform apply
 ```
 
-### Configuration du Service Mesh avec Istio
+## Configuration du Service Mesh avec Istio
 
 1. **Installer Istio**.
 2. **Configurer un Ingress Gateway unique** pour les microservices (`user`, `booking`, `payment`, `car`).
@@ -1286,7 +1286,7 @@ terraform apply
 
 ---
 
-#### 1. **Prérequis**
+### 1. **Prérequis**
 
 - Un cluster Kubernetes fonctionnel.
 - `kubectl` configuré pour accéder à votre cluster.
@@ -1294,7 +1294,7 @@ terraform apply
 
 ---
 
-#### 2. **Installation d'Istio**
+### 2. **Installation d'Istio**
 
 #### 2.1. **Télécharger Istio**
 Téléchargez la dernière version d'Istio :
@@ -1311,12 +1311,12 @@ istioctl install --set profile=default -y
 ```
 
 
-### 2.2.3. Vérifier l'Installation
+#### 2.2.3. Vérifier l'Installation
 Vérifiez que les pods Istio sont en cours d'exécution :
 ```bash
 kubectl get pods -n istio-system
 ```
-#### 2.3. Configuration d'un Ingress Gateway Unique
+### 2.3. Configuration d'un Ingress Gateway Unique
 #### 2.3.1. Créer un Gateway
 Créez un fichier gateway.yaml pour définir un Gateway unique qui écoutera sur le port 80 (HTTP) ou 443 (HTTPS) :
 
@@ -1344,8 +1344,8 @@ Appliquez la configuration :
 kubectl apply -f gateway.yaml
 ```
 
-#### 2.4. Configuration des VirtualServices pour les Microservices
-2.4.1. VirtualService pour user-service
+### 2.4. Configuration des VirtualServices pour les Microservices
+#### 2.4.1. VirtualService pour user-service
 Créez un fichier user-virtualservice.yaml :
 
 ```yaml
@@ -1374,7 +1374,7 @@ Appliquez la configuration :
 ```bash
 kubectl apply -f user-virtualservice.yaml
 ```
-### 2.4.2. VirtualService pour tous les microservices
+#### 2.4.2. VirtualService pour tous les microservices
 Créez un fichier car-rental-vs.yaml pour gérer les routes de tous les microservices :
 
 ```yaml
@@ -1432,7 +1432,7 @@ Obtenez l'adresse IP de l'Istio Ingress Gateway pour tester la configuration :
 ```bash
 kubectl get svc -n istio-system istio-ingressgateway
 ```
-#### 3.Conclusion
+### 3.Conclusion
 Ce guide permet d'importer des services Kubernetes existants dans l'état de Terraform et de configurer un service mesh avec Istio pour gérer le trafic entre les microservices. Les étapes incluent l'installation d'Istio, la configuration d'un Ingress Gateway unique, et la création de VirtualServices pour chaque microservice. Cette configuration optimise la gestion du trafic et améliore la sécurité et la performance de l'application.
 
 
