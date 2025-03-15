@@ -112,7 +112,7 @@ Chaque  microservice est  une application autonome et développé séparément .
 
 ## Pipeline CI/CD avec Terraform et Kubernetes
 
-Cette etape décrit les étapes du pipeline CI/CD pour déployer  l'application de location de voitures sur Google Cloud Platform (GCP) en utilisant Terraform et Kubernetes. Le pipeline inclut des aspects de sécurité et d'optimisation.
+Cette etape décrit les étapes du pipeline CI/CD pour déployer  l'application sur Google Cloud Platform (GCP) en utilisant Terraform et Kubernetes. Le pipeline inclut des aspects de sécurité et d'optimisation.
 
 ## 1. **Configuration de Terraform**
 
