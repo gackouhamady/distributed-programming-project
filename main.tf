@@ -92,38 +92,6 @@ resource "kubernetes_cluster_role_binding" "admin_binding" {
   }
 }
 
-# ClusterRole pour permettre l'accès à toutes les ressources
-resource "kubernetes_cluster_role" "cluster_admin" {
-  metadata {
-    name = "cluster-admin"
-  }
-
-  rule {
-    api_groups = [""]
-    resources  = ["*"]
-    verbs      = ["*"]
-  }
-}
-
-# ClusterRoleBinding pour associer le ClusterRole à un utilisateur
-resource "kubernetes_cluster_role_binding" "admin_binding" {
-  metadata {
-    name = "admin-binding"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = kubernetes_cluster_role.cluster_admin.metadata[0].name
-  }
-
-  subject {
-    kind      = "User"
-    name      = "admin"
-    api_group = "rbac.authorization.k8s.io"
-  }
-}
-
 # PeerAuthentication pour activer le mTLS
 resource "kubernetes_manifest" "peer_authentication" {
   provider = kubernetes
@@ -139,39 +107,6 @@ resource "kubernetes_manifest" "peer_authentication" {
       mtls = {
         mode = "STRICT"
       }
-    }
-  }
-}
-
-# Gateway avec TLS
-resource "kubernetes_manifest" "tls_gateway" {
-  provider = kubernetes
-
-  manifest = {
-    apiVersion = "networking.istio.io/v1alpha3"
-    kind       = "Gateway"
-    metadata = {
-      name      = "tls-gateway"
-      namespace = "default"
-    }
-    spec = {
-      selector = {
-        istio = "ingressgateway"
-      }
-      servers = [
-        {
-          port = {
-            number   = 443
-            name     = "https"
-            protocol = "HTTPS"
-          }
-          tls = {
-            mode           = "SIMPLE"
-            credentialName = "my-certificate"
-          }
-          hosts = ["example.com"]
-        }
-      ]
     }
   }
 }
