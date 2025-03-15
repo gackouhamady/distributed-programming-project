@@ -1,8 +1,8 @@
 # Rapport Projet Car-Rental  
 
 <div align="center">
-    <img src="u.png" alt="Logo Université" width="150" style="float:left; margin-right: 330px;">
-    <img src="f.jpeg" alt="Logo Formation" width="150" style="float:right;">
+    <img src="u.png" alt="Logo Université" width="800" style="float:left; margin-right: 330px;">
+    <img src="f.jpeg" alt="Logo Formation" width="800" style="float:right;">
 </div>
 
 
