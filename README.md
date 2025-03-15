@@ -1,7 +1,5 @@
 # 📊 Rapport du Projet Programmation Distribuée : Car-Rental Project
 
-## 📝 Informations du Projet
-
 <table style="width:100%; border-collapse: collapse; text-align: left;">
     <tr style="background-color: #2E2E2E; color: white;">
         <th style="padding: 10px; border: 1px solid #ddd;">Catégorie</th>
@@ -22,8 +20,6 @@
 </table>
 
 <br/>
-
-## 🎓 Logos des Institutions
 
 <div align="center">
     <img src="u.png" alt="Logo Université" width="300" style="margin-right: 50px;">
