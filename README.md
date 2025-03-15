@@ -28,6 +28,35 @@
 
 
 <br/>
+
+
+
+# Table des Matières
+
+1. [Objectif du Projet](#objectif-du-projet)
+2. [Contexte Technologique](#contexte-technologique)
+3. [Architecture simplifiée du Projet](#architecture-simplifiée-du-projet)
+4. [Diagramme d'Architecture](#diagramme-darchitecture)
+5. [Architecture Globale](#architecture-globale)
+6. [Technologies Utilisées](#technologies-utilisées)
+7. [Pipeline CI/CD avec Terraform et Kubernetes](#pipeline-cicd-avec-terraform-et-kubernetes)
+8. [Sécurité des Images Docker : Intégration du Scan avec Trivy](#sécurité-des-images-docker-intégration-du-scan-avec-trivy)
+9. [Importation des Services Kubernetes dans Terraform et Configuration du Service Mesh avec Istio](#importation-des-services-kubernetes-dans-terraform-et-configuration-du-service-mesh-avec-istio)
+10. [Points Clés Réalisés dans le projet](#points-clés-réalisés-dans-le-projet)
+11. [Conclusion](#conclusion)
+12. [Perspectives](#perspectives)
+
+
+
+
+
+
+
+
+
+
+
+
  
 
 
