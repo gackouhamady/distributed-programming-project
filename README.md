@@ -1,4 +1,15 @@
-# 📊 Rapport du Projet Programmation Distribuée : Car-Rental Project
+# Rapport du Projet Programmation Distribuée : Car-Rental Project
+
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot)
+![Kubernetes](https://img.shields.io/badge/kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)
+![Istio](https://img.shields.io/badge/Istio-466BB0?style=for-the-badge&logo=istio&logoColor=white)
+![GCP](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
+![Trivy](https://img.shields.io/badge/Trivy-1904DA?style=for-the-badge&logo=aqua-security&logoColor=white)
 
 <table style="width:100%; border-collapse: collapse; text-align: left;">
     <tr style="background-color: #2E2E2E; color: white;">
@@ -30,21 +41,19 @@
 <br/>
 
 
-
-# Table des Matières
-
-1. [Objectif du Projet](#objectif-du-projet)
-2. [Contexte Technologique](#contexte-technologique)
-3. [Architecture simplifiée du Projet](#architecture-simplifiée-du-projet)
-4. [Diagramme d'Architecture](#diagramme-darchitecture)
-5. [Architecture Globale](#architecture-globale)
-6. [Technologies Utilisées](#technologies-utilisées)
-7. [Pipeline CI/CD avec Terraform et Kubernetes](#pipeline-cicd-avec-terraform-et-kubernetes)
-8. [Sécurité des Images Docker : Intégration du Scan avec Trivy](#sécurité-des-images-docker--intégration-du-scan-avec-trivy)
-9. [Importation des Services Kubernetes dans Terraform et Configuration du Service Mesh avec Istio](#importation-des-services-kubernetes-dans-terraform-et-configuration-du-service-mesh-avec-istio)
-10. [Points Clés Réalisés dans le projet](#points-clés-réalisés-dans-le-projet)
-11. [Conclusion](#conclusion)
-12. [Perspectives](#perspectives)
+- [Rapport du Projet Programmation Distribuée : Car-Rental Project](#rapport-du-projet-programmation-distribuee-car-rental-project)
+    1. [Objectif du Projet](#objectif-du-projet)
+    2. [Contexte Technologique](#contexte-technologique)
+    3. [Architecture simplifiée du Projet](#architecture-simplifiée-du-projet)
+    4. [Diagramme d'Architecture](#diagramme-darchitecture)
+    5. [Architecture Globale](#architecture-globale)
+    6. [Technologies Utilisées](#technologies-utilisées)
+    7. [Pipeline CI/CD avec Terraform et Kubernetes](#pipeline-cicd-avec-terraform-et-kubernetes)
+    8. [Sécurité des Images Docker : Intégration du Scan avec Trivy](#sécurité-des-images-docker--intégration-du-scan-avec-trivy)
+    9. [Importation des Services Kubernetes dans Terraform et Configuration du Service Mesh avec Istio](#importation-des-services-kubernetes-dans-terraform-et-configuration-du-service-mesh-avec-istio)
+    10. [Points Clés Réalisés dans le projet](#points-clés-réalisés-dans-le-projet)
+    11. [Conclusion](#conclusion)
+    12. [Perspectives](#perspectives)
 
 
 
